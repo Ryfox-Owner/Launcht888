@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <link rel="apple-touch-icon" href="logo.png" sizes="180x180">
+  <title>Disney Style Mobile UI</title>
+  <style>
+    :root {
+      --bg: #171c2d;
+      --bg-deep: #0d1220;
+      --surface: #232a3d;
+      --surface-2: #2a3145;
+      --text: #f3f6ff;
+      --muted: #aeb8d0;
+      --muted-2: #7f8aa9;
+      --blue: #77c7ff;
+      --blue-2: #3d9cff;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .42);
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 20px;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      background: #14192a;
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      overflow: hidden;
+      /* Block scrolling */
+    }
+
+    .phone {
+      display: flex;
+      flex-direction: column;
+      width: min(510px, 100vw);
+      height: 112vh;
+      margin: 0 auto;
+      padding: 0% 14px 18px;
+      position: relative;
+      border-radius: 0;
+      background: linear-gradient(180deg, rgba(13, 18, 32, .0), rgba(13, 18, 32, .0));
+    }
+
+    .menu {
+      position: fixed;
+
+      top: 8%;
+      left: 30px;
+
+      z-index: 999;
+    }
+
+    .circulo {
+      width: 55px;
+      height: 55px;
+
+      border-radius: 50%;
+
+      background: #ffffff20;
+      backdrop-filter: blur(10px);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition: 0.3s;
+    }
+
+    .circulo:hover {
+      transform: scale(1.08);
+      background: #ffffff35;
+    }
+
+    .circulo img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .top-curve {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      width: 100%;
+      height: 14px;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      pointer-events: none;
+    }
+
+    .hero {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+      margin: 0 -14px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, #171c2d00, transparent 20%),
+        linear-gradient(to bottom,
+          rgba(5, 10, 20, .05) 0%,
+          rgba(5, 10, 20, .08) 40%,
+          rgba(20, 25, 42, .75) 72%,
+          #14192a 88%,
+          #14192a 100%);
+      z-index: 1;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(.82) saturate(.9);
+    }
+
+
+    .banner-figure {
+      display: none;
+    }
+
+    .figure-silhouette {
+      width: 88%;
+      max-width: 420px;
+      height: 100%;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 50% 26%, rgba(165, 203, 255, .28), transparent 17%),
+        radial-gradient(circle at 44% 70%, rgba(255, 198, 128, .16), transparent 20%),
+        linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, 0));
+      position: relative;
+      filter: drop-shadow(0 24px 34px rgba(0, 0, 0, .28));
+    }
+
+    .figure-silhouette::before {
+      content: "";
+      position: absolute;
+      left: 16%;
+      top: 12%;
+      width: 56%;
+      height: 82%;
+      background:
+        radial-gradient(circle at 67% 16%, rgba(210, 226, 255, .56), rgba(210, 226, 255, .08) 15%, transparent 16%),
+        radial-gradient(circle at 53% 30%, rgba(190, 209, 235, .96), rgba(190, 209, 235, .42) 18%, transparent 19%),
+        radial-gradient(circle at 48% 54%, rgba(111, 127, 154, .92), rgba(111, 127, 154, .16) 20%, transparent 21%),
+        linear-gradient(150deg, rgba(243, 248, 255, .32), rgba(39, 47, 69, .12) 36%, rgba(10, 16, 29, .72) 72%);
+      clip-path: polygon(42% 0%, 61% 6%, 70% 18%, 79% 24%, 84% 35%, 91% 47%, 94% 56%, 95% 71%, 88% 80%, 80% 85%, 72% 91%, 66% 100%, 39% 100%, 33% 89%, 25% 80%, 18% 65%, 12% 49%, 17% 34%, 24% 23%, 31% 13%);
+      opacity: .92;
+      transform: rotate(8deg) translateY(10px);
+      filter: blur(.1px);
+    }
+
+    .hero-title-area {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 120px;
+      z-index: 3;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .brand-line {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #f1f4ff;
+      opacity: .96;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, .34);
+      margin-bottom: 2px;
+    }
+
+    .brand-small {
+      font-size: 11px;
+      letter-spacing: 3.2px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      opacity: .9;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: 48px;
+      line-height: .92;
+      letter-spacing: -1.9px;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, .55);
+    }
+
+    .pagination {
+      position: absolute;
+      left: 50%;
+      bottom: 72px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 3;
+    }
+
+    .pagination .bar {
+      width: 42px;
+      height: 6px;
+      border-radius: 999px;
+      background: #dfe7ff;
+      opacity: .95;
+    }
+
+    .pagination .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #dfe7ff;
+      opacity: .75;
+    }
+
+    .row2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  padding: 0 0px;
+  margin-top: 1px;
+}
+
+/* CARD */
+.poster2 {
+  transition: transform .25s ease;
+}
+
+.poster2:hover {
+  transform: translateY(-3px);
+}
+
+/* POSTER */
+.poster-card2 {
+  width: 100%;
+  height: 150px; /* menos alto */
+
+  overflow: hidden;
+  border-radius: 22px;
+
+  background: #1a1c22;
+}
+
+.poster-card2 img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+
+  transition: transform .35s ease;
+}
+
+.poster2:hover img {
+  transform: scale(1.04);
+}
+
+/* TEXTO */
+.poster-name {
+  margin-top: 12px;
+
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  text-align: left;
+}
+
+/* STARS */
+.stars {
+  margin-top: 4px;
+
+  font-size: 12px;
+  color: #ffd36b;
+
+  opacity: .9;
+
+  text-align: left;
+}
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      /* For Firefox */
+    }
+
+    .content::-webkit-scrollbar {
+      display: none;
+      /* For Chrome, Safari, and Edge */
+    }
+
+    .section-title {
+      font-size: 17px;
+      color: #dfe6ff;
+      margin: 0 0 14px 6px;
+      font-weight: 500;
+      letter-spacing: -.2px;
+    }
+
+    .row {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding: 0 6px 4px;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .row::-webkit-scrollbar {
+      display: none
+    }
+
+    .poster {
+      min-width: 165px;
+      scroll-snap-align: start;
+    }
+
+    .poster-card {
+      width: 100%;
+      height: 232px;
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(180deg, #1f2740, #0c101b);
+      border: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.04) contrast(1.03);
+    }
+
+    .poster-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(0, 0, 0, .08) 48%, rgba(0, 0, 0, .2) 100%);
+      pointer-events: none;
+    }
+
+    .poster-name {
+      margin: 10px 4px 6px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #d5dcef;
+      line-height: 1.1;
+    }
+
+    .stars {
+      display: flex;
+      gap: 3px;
+      margin-left: 4px;
+      color: #93a8d1;
+      font-size: 18px;
+      letter-spacing: -1px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 12px;
+      width: min(510px, calc(100vw - 18px));
+      padding: 14px 16px 16px;
+      border-radius: 24px;
+      background: rgba(20, 25, 39, .88);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, .05);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .42);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      color: #8d9ab9;
+      font-size: 11px;
+      line-height: 1.1;
+    }
+
+    .nav-item .icon {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .nav-item.active {
+      color: #b5c7ee
+    }
+
+    .safe-space {
+      height: 96px
+    }
+
+
+    .content2{
+  position: relative;
+
+  width: 106%;
+  height: 100vh;
+  left: -3%;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 0px;
+  animation: fadeIn 0.35s ease;
+}
+
+
+/* =========================
+   APP CARD
+========================= */
+
+.app{
+  width: 380px;
+  height: 250px;
+
+  border-radius: 35px;
+
+  background: rgba(255,255,255,0.12);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255,255,255,0.15);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 2;
+
+  margin-bottom: 20%;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.35),
+    inset 0 1px 1px rgba(255,255,255,0.1);
+}
+
+.app img{
+  width: 100%;
+  height: 100%;
+  border-radius: 35px;
+
+  object-fit: cover;
+}
+
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons{
+  margin-top: 35px;
+
+  width: 85%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+
+  z-index: 2;
+}
+
+.buttons div{
+  height: 58px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 17px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.25s;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+
+/* botón principal */
+.buttons div:first-child{
+  background: white;
+  color: black;
+
+  box-shadow:
+    0 10px 25px rgba(255,255,255,0.18);
+}
+
+/* botón secundario */
+.buttons div:last-child{
+  background: rgba(255,255,255,0.12);
+
+  color: white;
+
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+
+/* hover */
+.buttons div:hover{
+  transform: scale(1.02);
+}
+
+
+
+/* =========================
+   GLASS FONDO
+========================= */
+
+.glass{
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: 380px;
+
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+
+  background: linear-gradient(
+    to top,
+    #14192a 0%,
+    rgb(20, 25, 42) 30%,
+    rgb(20, 25, 42) 60%,
+    rgb(20, 25, 42) 85%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to top,
+    black 70%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: linear-gradient(
+    to top,
+    #14192a 70%,
+    transparent 100%
+  );
+
+  pointer-events: none;
+}
+
+.glass img{
+  position: absolute;   
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);  
+    object-fit: contain;
+    opacity: 0.5;
+}
+
+@keyframes fadeIn{
+
+from{
+  opacity: 0;
+  transform: scale(1.03);
+}
+
+to{
+  opacity: 1;
+  transform: scale(1);
+}
+
+}
+    
+
+    @media (max-width:420px) {
+      .hero {
+        height: 575px
+      }
+
+      .hero-title {
+        font-size: 42px
+      }
+
+      .brand-row {
+        gap: 10px;
+        padding: 0 20px
+      }
+
+      .brand-pill {
+        height: 38px
+      }
+
+      .poster {
+        min-width: 155px
+      }
+
+      .poster-card {
+        height: 224px
+      }
+
+      .poster-name {
+        font-size: 15px
+      }
+    }
+
+    @media (max-width:380px) {
+      .hero {
+        height: 560px
+      }
+
+      .hero-title {
+        font-size: 38px
+      }
+
+      .brand-row {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px
+      }
+
+      .brand-pill {
+        font-size: 10px
+      }
+
+      .poster {
+        min-width: 148px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone">
+    <section class="hero">
+
+      <img class="hero-bg" alt="The Mandalorian" />
+
+      <div class="banner-figure">
+        <div class="figure-silhouette"></div>
+      </div>
+
+      <div class="hero-title-area">
+        <div class="brand-line">Streaming</div>
+        <div class="brand-small"></div>
+        <h1 class="hero-title">skyshowtime</h1>
+      </div>
+
+      <div class="pagination" aria-hidden="true">
+        <div class="bar"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+    </section>
+
+    <main class="content" id="mainContent">
+
+      <a class="brand-row" style="display: none;"></a>
+
+      <h2 class="section-title">Recientemente</h2>
+      <div class="row2" id="streamingRecent">
+      </div>
+
+      <br>
+
+
+      <h2 class="section-title">Tus Apps</h2>
+      <div class="row" id="streamingRow"></div>
+
+      <br>
+
+      <h2 class="section-title">Apps Streaming</h2>
+      <div class="row" id="appsRow"></div>
+
+    </main>
+
+    <div class="content2" id="modal" style="display: none;">
+
+      <div class="app">
+        <img src="plus.png" alt="">
+      </div>
+
+      <div class="buttons">
+        <div>Entrar Ahora</div>
+        <div>Volver Atras</div>
+      </div>
+      <div class="glass">
+        <img src="plus.png" alt="">
+      </div>
+    </div>
+
+    <div class="safe-space">
+    </div>
+  </div>
+
+
+
+
+
+  <script>
+    const streamingData = [
+      {
+        title: "The Mandalorian",
+        platform: "Disney Plus",
+        type: "Streaming",
+        featured: true,
+        image: "Disney+.png",
+        banner: "banner-disney.png",
+        glass: "Disney.png",
+        poster: "plus.png",
+        deepLink: "disneyplus://"
+      },
+      {
+        title: "The Boys",
+        platform: "Prime Video",
+        type: "Streaming",
+        featured: true,
+        image: "Prime.png",
+        banner: "Prime.png",
+        glass: "Prime.png",
+        poster: "prim.png",
+        deepLink: "primevideo://"
+      },
+      {
+        title: "House Of The Dragon",
+        platform: "HBO MAX",
+        type: "Streaming",
+        featured: false,
+        image: "Max.png",
+        banner: "banner-max.png",
+        glass: "Max.png",
+        poster: "maxx.png",
+        deepLink: "https://play.hbomax.com"
+      },
+      {
+        title: "Wednesday",
+        platform: "Netflix",
+        type: "Streaming",
+        featured: false,
+        image: "YT.png",
+        banner: "banner-netflix.png",
+        glass: "YT.png",
+        poster: "netflix.png",
+        deepLink: "https://www.netflix.com/title/"
+      },
+      {
+        title: "Sky Originals",
+        platform: "Skyshowtime",
+        type: "Streaming",
+        featured: true,
+        image: "Sky.png",
+        banner: "Sky-banner.png",
+        glass: "Sky.png",
+        poster: "ski.png",
+        deepLink: "https://www.skyshowtime.com/watch/profiles?"
+      },
+      {
+        title: "Youtube",
+        platform: "Youtube",
+        type: "App",
+        featured: false,
+        image: "YT.png",
+        banner: "banner-yt.png",
+        glass: "YT.png",
+        poster: "yot.png",
+        deepLink: "youtube://"
+      },
+      {
+        title: "Kick",
+        platform: "Kick",
+        type: "App",
+        featured: false,
+        poster: "kick.png",
+        banner: "banner-kick.png",
+        glass: "kick.png",
+        deepLink: "https://kick.com"
+      }
+    ];
+    
+    /* =========================
+       SHUFFLE
+    ========================= */
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    
+    const shuffledData = shuffleArray([...streamingData]);
+    
+    /* =========================
+       HERO NORMAL
+    ========================= */
+    const heroBg = document.querySelector(".hero-bg");
+    const heroTitle = document.querySelector(".hero-title");
+    const brandLine = document.querySelector(".brand-line");
+    
+    function updateHero(item) {
+      heroBg.src = item.image;
+      heroTitle.innerText = item.platform;
+      brandLine.innerText = item.type;
+    }
+    
+    function setRandomHero() {
+      const heroItems = shuffledData.filter(item => item.featured);
+      const random = heroItems[Math.floor(Math.random() * heroItems.length)];
+      updateHero(random);
+    }
+    
+    /* =========================
+       CARDS
+    ========================= */
+    const streamingRow = document.getElementById("streamingRow");
+    const appsRow = document.getElementById("appsRow");
+    
+    shuffledData.forEach((item) => {
+      const card = `
+        <article class="poster" data-title="${item.title}">
+          <div class="poster-card">
+            <img src="${item.poster}" alt="${item.title}">
+          </div>
+    
+          <div class="poster-name">
+            ${item.platform}
+          </div>
+    
+          <div class="stars">
+            ★ ★ ★ ★ ☆
+          </div>
+        </article>
+      `;
+    
+      if (item.type === "Streaming") streamingRow.innerHTML += card;
+      if (item.type === "App") appsRow.innerHTML += card;
+    });
+    
+    /* =========================
+       MODAL
+    ========================= */
+    const mainContent = document.querySelector(".content");
+    const brandRow = document.querySelector(".brand-row");
+    const modal = document.getElementById("modal");
+    
+    const modalAppImage = document.querySelector(".app img");
+    const modalGlassImage = document.querySelector(".glass img");
+    
+    const enterButton = document.querySelector(".buttons div:first-child");
+    const backButton = document.querySelector(".buttons div:last-child");
+    
+    modal.style.display = "none";
+    let selectedItem = null;
+    
+    /* =========================
+       HERO EN MODAL
+    ========================= */
+    function setHeroFromModal(item) {
+      heroBg.src = item.banner || item.image;
+      heroTitle.innerText = item.platform;
+      brandLine.innerText = item.type;
+    }
+    
+    /* =========================
+       RECENT APPS
+    ========================= */
+    function saveRecentApp(item) {
+      let recent = JSON.parse(localStorage.getItem("recentApps")) || [];
+    
+      recent = recent.filter(app => app.title !== item.title);
+      recent.unshift(item);
+      recent = recent.slice(0, 2);
+    
+      localStorage.setItem("recentApps", JSON.stringify(recent));
+      renderRecentApps();
+    }
+    
+    function renderRecentApps() {
+      const row = document.getElementById("streamingRecent");
+      if (!row) return;
+    
+      const recent = JSON.parse(localStorage.getItem("recentApps")) || [];
+    
+      row.innerHTML = "";
+    
+      recent.forEach(item => {
+        row.innerHTML += `
+          <article class="poster2">
+            <div class="poster-card2">
+              <img src="${item.poster}" alt="${item.title}">
+            </div>
+          </article>
+        `;
+      });
+    }
+    
+    /* =========================
+       CLICK CARDS
+    ========================= */
+    document.querySelectorAll(".poster").forEach((poster) => {
+      poster.addEventListener("click", () => {
+        const title = poster.dataset.title;
+    
+        selectedItem = shuffledData.find(item => item.title === title);
+        if (!selectedItem) return;
+    
+        mainContent.style.display = "none";
+        brandRow.style.display = "none";
+        modal.style.display = "flex";
+    
+        modalAppImage.src = selectedItem.poster;
+        modalGlassImage.src = selectedItem.glass || selectedItem.poster;
+    
+        setHeroFromModal(selectedItem);
+      });
+    });
+    
+    /* =========================
+       ENTER APP (DEEPLINK)
+    ========================= */
+    enterButton.addEventListener("click", () => {
+      if (!selectedItem || !selectedItem.deepLink) return;
+    
+      saveRecentApp(selectedItem);
+    
+      const link = selectedItem.deepLink;
+      window.location.href = link;
+    
+      setTimeout(() => {
+        if (!document.hidden) {
+          window.location.href = link.startsWith("http")
+            ? link
+            : "https://www.google.com/search?q=" + encodeURIComponent(selectedItem.platform);
+        }
+      }, 1200);
+    });
+    
+    /* =========================
+       VOLVER
+    ========================= */
+    backButton.addEventListener("click", () => {
+      modal.style.display = "none";
+      mainContent.style.removeProperty("display");
+      brandRow.style.removeProperty("display");
+      setRandomHero();
+    });
+    
+    /* =========================
+       INIT
+    ========================= */
+    document.addEventListener("DOMContentLoaded", () => {
+      setRandomHero();
+      renderRecentApps();
+    });
+    </script>
+
+</body>
+
+
+
+</html>
